@@ -9,27 +9,22 @@ global with sharing class ApexRESTController {
 
         Account account = [SELECT Id, Name, Value__c, Description FROM Account WHERE Id = :accountId];
 
-        AccountWrapper wrapper = new AccountWrapper();
-        wrapper.name = account.Name;
-        wrapper.value = Integer.valueOf(account.Value__c);
+        AccountWrapper wrapper = new AccountWrapper(account.Name, account.Value__c);
 
         RestContext.response.statusCode = 200;
         RestContext.response.responseBody = Blob.valueOf(JSON.serialize(wrapper));
-
     }
 
-
     @HttpPost
-    global static String postAccount() {
+    global static void postAccount() {
         String jsonBody = RestContext.request.requestBody.toString();
-
         AccountWrapper wrapper = (AccountWrapper) JSON.deserialize(jsonBody, AccountWrapper.class);
-
-
 
         Account account = new Account(Name = wrapper.name, Value__c = wrapper.value);
         insert account;
-        return account.Id;
+
+        RestContext.response.statusCode = 200;
+        RestContext.response.responseBody = Blob.valueOf(account.Id);
     }
 
     @HttpPut
@@ -50,5 +45,13 @@ global with sharing class ApexRESTController {
     public class AccountWrapper {
         public String name;
         public Integer value;
+
+        public AccountWrapper() {
+        }
+
+        public AccountWrapper(String name, Decimal value) {
+            this.name = name;
+            this.value = Integer.valueOf(value);
+        }
     }
 }

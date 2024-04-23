@@ -1,36 +1,40 @@
 public with sharing class ApexRESTService {
 
-    public static String sendGetRequest() {
+    public static RequestResponseWrapper sendGetRequest() {
         HttpRequest request = new HttpRequest();
         request.setMethod('GET');
-        request.setEndpoint('callout:animalsSF/services/apexrest/animals?id=11');
+        request.setEndpoint('callout:SFCredential/services/apexrest/animals?id=11');
 
         Http http = new Http();
-
         HttpResponse response = http.send(request);
-        return response.getBody();
+
+        String requestBody = response.getBody();
+        RequestResponseWrapper wrapper = (RequestResponseWrapper) JSON.deserialize(requestBody, RequestResponseWrapper.class);
+        wrapper.print();
+        return wrapper;
     }
 
-    public static void sendPostRequest() {
+    public static String sendPostRequest() {
         HttpRequest request = new HttpRequest();
         request.setMethod('POST');
-        request.setEndpoint('callout:animalsSF/services/apexrest/animals');
+        request.setEndpoint('callout:SFCredential/services/apexrest/animals');
         request.setHeader('Content-Type', 'application/json');
-        request.setBody('{\n' +
-                '  "status" : "Nowy Status",\n' +
-                '  "photo" : null,\n' +
-                '  "name" : "REST POST MEthod",\n' +
-                '  "id" : null,\n' +
-                '  "description" : "desc",\n' +
-                '  "breed" : "Dog",\n' +
-                '  "age" : 50\n' +
-                '}');
+
+        RequestResponseWrapper wrapper = new RequestResponseWrapper();
+        wrapper.status = 'Nowy Status';
+        wrapper.photo = null;
+        wrapper.name = 'REST POST MEthod"';
+        wrapper.id = '';
+        wrapper.description = '';
+        wrapper.breed = null;
+        wrapper.age = 40;
+        request.setBody(JSON.serialize(wrapper));
 
         Http http = new Http();
 
         HttpResponse response = http.send(request);
         System.debug(response.getStatusCode());
         System.debug(response.getBody());
+        return response.getBody();
     }
-
 }
