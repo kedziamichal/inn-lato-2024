@@ -1,0 +1,23 @@
+<!-- Tagger -->
+<template>
+    <lightning-card title="Tags">
+        <div class="slds-p-horizontal_small">
+            <lightning-input type="text" label="Enter tag name" onchange={handleTagNameChange}></lightning-input>
+            <lightning-combobox
+                    name="tagColor"
+                    label="Pick tag color"
+                    value={tagColorValue}
+                    placeholder="Pick tag color"
+                    options={options}
+                    onchange={handleTagColorChange}></lightning-combobox>
+        </div>
+
+        <template for:each={tags} for:item="tag">
+            <c-tag key={tag.tagId} name={tag.name} color={tag.color} tag-id={tag.tagId}
+                   onremovetag={handleRemoveTag}></c-tag>
+        </template>
+        <h1>{tmp}</h1>
+        <lightning-button label="Save" slot="footer" onclick={handleSaveTags}></lightning-button>
+        <lightning-button label="Add Tags" slot="actions" onclick={handleAddTags}></lightning-button>
+    </lightning-card>
+</template>

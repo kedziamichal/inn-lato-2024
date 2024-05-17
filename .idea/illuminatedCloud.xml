@@ -4,10 +4,10 @@
     <option name="connections">
       <list>
         <IlluminatedCloudConnection>
-          <option name="connectionName" value="INN-M" />
+          <option name="connectionName" value="INNLWC" />
           <option name="connectionType" value="OAUTH" />
           <option name="defaultModuleName" value="inn-z23" />
-          <option name="offlineSymbolTablePath" value="$PROJECT_DIR$/IlluminatedCloud/INN_M/OfflineSymbolTable.zip" />
+          <option name="offlineSymbolTablePath" value="$PROJECT_DIR$/IlluminatedCloud/INNLWC/OfflineSymbolTable.zip" />
         </IlluminatedCloudConnection>
       </list>
     </option>
